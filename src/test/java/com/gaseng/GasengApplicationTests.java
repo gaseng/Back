@@ -1,4 +1,4 @@
-package com.example.gaseng;
+package com.gaseng;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

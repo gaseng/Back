@@ -1,4 +1,4 @@
-package com.example.gaseng;
+package com.gaseng;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

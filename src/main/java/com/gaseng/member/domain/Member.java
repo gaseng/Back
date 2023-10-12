@@ -2,11 +2,14 @@ package com.gaseng.member.domain;
 
 import com.gaseng.checklist.domain.Checklist;
 import com.gaseng.global.common.BaseTimeEntity;
+import com.gaseng.sharehouse.domain.Sharehouse;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,4 +39,7 @@ public class Member extends BaseTimeEntity {
 
     @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
     private Checklist checklist;
+
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    private List<Sharehouse> sharehouses = new ArrayList<>();
 }

@@ -1,5 +1,6 @@
 package com.gaseng.member.domain;
 
+import com.gaseng.checklist.domain.Checklist;
 import com.gaseng.global.common.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -29,9 +30,10 @@ public class Member extends BaseTimeEntity {
 
     private String memPhone;
 
-    @Embedded
     private Role memRole;
 
-    @Embedded
     private MemberStatus memStatus;
+
+    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
+    private Checklist checklist;
 }

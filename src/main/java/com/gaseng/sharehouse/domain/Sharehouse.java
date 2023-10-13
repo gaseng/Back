@@ -1,5 +1,6 @@
 package com.gaseng.sharehouse.domain;
 
+import com.gaseng.chat.domain.ChatRoom;
 import com.gaseng.file.domain.ShareFile;
 import com.gaseng.global.common.BaseTimeEntity;
 import com.gaseng.member.domain.Member;
@@ -42,4 +43,7 @@ public class Sharehouse extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "sharehouse", orphanRemoval = true)
     private List<ShareFile> shareFiles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sharehouse", orphanRemoval = true)
+    private List<ChatRoom> chatRooms = new ArrayList<>();
 }

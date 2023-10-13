@@ -1,5 +1,7 @@
 package com.gaseng.member.domain;
 
+import com.gaseng.chat.domain.ChatRoom;
+import com.gaseng.chat.domain.Message;
 import com.gaseng.checklist.domain.Checklist;
 import com.gaseng.file.domain.File;
 import com.gaseng.global.common.BaseTimeEntity;
@@ -58,4 +60,10 @@ public class Member extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "member", orphanRemoval = true)
     private List<KycRequire> kycRequires = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    private List<ChatRoom> chatRooms = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    private List<Message> messages = new ArrayList<>();
 }

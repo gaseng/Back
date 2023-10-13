@@ -6,8 +6,8 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum KycNoticeStatus {
-    REQUEST("요청"),
-    REJECT("반려"),
+    DENIAL("반려"),
+    REJECT("거절"),
     APPROVE("승인")
     ;
 

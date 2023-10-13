@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,15 +17,16 @@ public class Checklist {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chkId;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "mem_id", insertable = false, updatable = false)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mem_id")
     private Member member;
 
     private CheckSleepingHabit chkSleepingHabit;
 
     private CheckCigarette chkCigarette;
 
-    private String chkSleepTime;
+    @Temporal(TemporalType.TIME)
+    private Date chkSleepTime;
 
     private String chkMbti;
 

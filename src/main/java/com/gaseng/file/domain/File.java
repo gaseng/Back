@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,7 +24,4 @@ public class File extends BaseTimeEntity {
     private String fileName;
 
     private String filePath;
-
-    @OneToMany(mappedBy = "file", orphanRemoval = true)
-    private List<ShareFile> shareFiles = new ArrayList<>();
 }

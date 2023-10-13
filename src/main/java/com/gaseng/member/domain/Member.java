@@ -1,13 +1,7 @@
 package com.gaseng.member.domain;
 
 import com.gaseng.chat.domain.ChatRoom;
-import com.gaseng.chat.domain.Message;
-import com.gaseng.checklist.domain.Checklist;
-import com.gaseng.file.domain.File;
 import com.gaseng.global.common.BaseTimeEntity;
-import com.gaseng.kyc.domain.Kyc;
-import com.gaseng.kyc.domain.KycNotice;
-import com.gaseng.kyc.domain.KycRequire;
 import com.gaseng.sharehouse.domain.Sharehouse;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -43,27 +37,9 @@ public class Member extends BaseTimeEntity {
 
     private MemberStatus memStatus;
 
-    @OneToOne(mappedBy = "member", fetch = FetchType.LAZY)
-    private Checklist checklist;
-
-    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sharehouse> sharehouses = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", orphanRemoval = true)
-    private List<File> files = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", orphanRemoval = true)
-    private List<Kyc> kycs = new ArrayList<>();
-
-    @OneToOne(mappedBy = "member", orphanRemoval = true)
-    private KycNotice kycNotice;
-
-    @OneToMany(mappedBy = "member", orphanRemoval = true)
-    private List<KycRequire> kycRequires = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    @OneToMany(mappedBy = "member")
     private List<ChatRoom> chatRooms = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member", orphanRemoval = true)
-    private List<Message> messages = new ArrayList<>();
 }

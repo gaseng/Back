@@ -32,7 +32,4 @@ public class KycRequire {
     private String kycrZip;
 
     private String kycrJob;
-
-    @OneToOne(mappedBy = "kycRequire", fetch = FetchType.LAZY)
-    private KycNotice kycNotice;
 }

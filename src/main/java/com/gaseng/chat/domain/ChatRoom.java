@@ -27,6 +27,6 @@ public class ChatRoom {
     @JoinColumn(name = "shr_id", nullable = false)
     private Sharehouse sharehouse;
 
-    @OneToMany(mappedBy = "chatRoom", orphanRemoval = true)
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Message> messages = new ArrayList<>();
 }

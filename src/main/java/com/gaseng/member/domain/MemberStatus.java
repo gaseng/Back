@@ -6,8 +6,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum MemberStatus {
-    APPROVE("승인"),
-    REJECT("반려"),
+    NORMAL("노멀"),
+    WAITING("대기"),
+    REJECT("거절")
     ;
 
     private String value;

@@ -1,7 +1,5 @@
-package com.gaseng.sharehouse.domain;
+package com.gaseng.file.domain;
 
-import com.gaseng.file.domain.File;
-import com.gaseng.file.domain.ShareFile;
 import com.gaseng.global.common.BaseTimeEntity;
 import com.gaseng.member.domain.Member;
 import lombok.AccessLevel;
@@ -15,32 +13,20 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-@Table(name = "sharehouse")
-public class Sharehouse extends BaseTimeEntity {
+@Table(name = "file")
+public class File extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long shrId;
+    private Long fileId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_id", nullable = false)
     private Member member;
 
-    private String shrTitle;
+    private String fileName;
 
-    private String shrDescription;
+    private String filePath;
 
-    private String shrAddress;
-
-    private String shrAddressDetail;
-
-    private String shrLatitude;
-
-    private String shrLongitude;
-
-    private String shrPoster;
-
-    private SharehouseStatus shrStatus;
-
-    @OneToMany(mappedBy = "sharehouse", orphanRemoval = true)
+    @OneToMany(mappedBy = "file", orphanRemoval = true)
     private List<ShareFile> shareFiles = new ArrayList<>();
 }

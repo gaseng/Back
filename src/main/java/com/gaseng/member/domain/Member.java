@@ -3,6 +3,9 @@ package com.gaseng.member.domain;
 import com.gaseng.checklist.domain.Checklist;
 import com.gaseng.file.domain.File;
 import com.gaseng.global.common.BaseTimeEntity;
+import com.gaseng.kyc.domain.Kyc;
+import com.gaseng.kyc.domain.KycNotice;
+import com.gaseng.kyc.domain.KycRequire;
 import com.gaseng.sharehouse.domain.Sharehouse;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -46,4 +49,13 @@ public class Member extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "member", orphanRemoval = true)
     private List<File> files = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    private List<Kyc> kycs = new ArrayList<>();
+
+    @OneToOne(mappedBy = "member", orphanRemoval = true)
+    private KycNotice kycNotice;
+
+    @OneToMany(mappedBy = "member", orphanRemoval = true)
+    private List<KycRequire> kycRequires = new ArrayList<>();
 }

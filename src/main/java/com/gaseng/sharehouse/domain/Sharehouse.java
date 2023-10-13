@@ -1,6 +1,5 @@
 package com.gaseng.sharehouse.domain;
 
-import com.gaseng.file.domain.File;
 import com.gaseng.file.domain.ShareFile;
 import com.gaseng.global.common.BaseTimeEntity;
 import com.gaseng.member.domain.Member;

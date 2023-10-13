@@ -1,6 +1,5 @@
 package com.gaseng.file.domain;
 
-import com.gaseng.member.domain.Member;
 import com.gaseng.sharehouse.domain.Sharehouse;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/gaseng?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: root
-    password: root
+    url: jdbc:mysql://${RDS_HOST}:3306/gaseng
+    username: ${RDS_USERNAME}
+    password: ${RDS_PASSWORD}
 
   jpa:
     open-in-view: false
@@ -14,3 +14,7 @@ spring:
         show_sql: false
         format_sql: true
         default_batch_fetch_size: 50
+
+  config:
+    import:
+      - classpath:secret.yml

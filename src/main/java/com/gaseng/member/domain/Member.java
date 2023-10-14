@@ -4,6 +4,7 @@ import com.gaseng.chat.domain.ChatRoom;
 import com.gaseng.global.common.BaseTimeEntity;
 import com.gaseng.sharehouse.domain.Sharehouse;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,13 +24,14 @@ public class Member extends BaseTimeEntity {
     @Embedded
     private Email memEmail;
 
-    private String memPassword;
+    @Embedded
+    private Password memPassword;
 
     private String memName;
 
     private String memNickname;
 
-    private Boolean memSex;
+    private Sex memSex;
 
     private String memPhone;
 
@@ -42,4 +44,21 @@ public class Member extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "member")
     private List<ChatRoom> chatRooms = new ArrayList<>();
+
+    @Builder
+    private Member(Email memEmail, Password memPassword, String memName, String memNickname, Sex memSex, String memPhone) {
+        this.memEmail = memEmail;
+        this.memPassword = memPassword;
+        this.memName = memName;
+        this.memNickname = memNickname;
+        this.memSex = memSex;
+        this.memPhone = memPhone;
+        this.memRole = Role.USER;
+        this.memStatus = MemberStatus.WAITING;
+    }
+
+    public static Member registerMember(
+            Email memEmail, Password memPassword, String memName, String memNickname, Sex memSex, String memPhone) {
+        return new Member(memEmail, memPassword, memName, memNickname, memSex, memPhone);
+    }
 }

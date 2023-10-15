@@ -29,6 +29,9 @@ public enum GlobalErrorCode implements ErrorCode {
     NOT_SUPPORTED_URI(HttpStatus.NOT_FOUND, "REQUEST_007", "지원하지 않는 URL입니다."),
     NOT_SUPPORTED_METHOD(HttpStatus.METHOD_NOT_ALLOWED, "REQUEST_008", "지원하지 않는 HTTP Method 요청입니다."),
     NOT_SUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "REQUEST_009", "잘못된 미디어 타입입니다."),
+    INVALID_JWT(HttpStatus.UNAUTHORIZED, "REQUEST_010", "유효하지 않은 JWT입니다."),
+    INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "REQUEST_011", "토큰이 일치하지 않습니다"),
+    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "REQUEST_012", "토큰의 유효기간이 만료되었습니다."),
 
     /**
      * 500 : 응답 실패

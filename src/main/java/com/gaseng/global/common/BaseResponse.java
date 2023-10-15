@@ -25,7 +25,7 @@ public class BaseResponse<T> {
         this.status = SUCCESS.getStatus().value();
         this.code = SUCCESS.getCode();
         this.message = SUCCESS.getMessage();
-        this.data = data;
+        this.data = result;
     }
 
     private BaseResponse(ErrorCode code) {

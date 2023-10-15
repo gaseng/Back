@@ -16,6 +16,6 @@ public enum MemberErrorCode implements ErrorCode {
     ;
 
     private final HttpStatus status;
-    private final String errorCode;
+    private final String code;
     private final String message;
 }

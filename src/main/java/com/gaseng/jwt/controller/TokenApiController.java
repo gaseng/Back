@@ -1,5 +1,7 @@
 package com.gaseng.jwt.controller;
 
+import com.gaseng.global.annotation.ExtractPayload;
+import com.gaseng.global.annotation.ExtractToken;
 import com.gaseng.global.common.BaseResponse;
 import com.gaseng.jwt.dto.TokenResponse;
 import com.gaseng.jwt.service.TokenReissueService;
@@ -15,7 +17,7 @@ public class TokenApiController {
     private final TokenReissueService tokenReissueService;
 
     @PostMapping("/reissue")
-    public BaseResponse<TokenResponse> reissueTokens(Long memId, String refreshToken) {
+    public BaseResponse<TokenResponse> reissueTokens(@ExtractPayload Long memId, @ExtractToken String refreshToken) {
         TokenResponse tokenResponse = tokenReissueService.reissueTokens(memId, refreshToken);
         return new BaseResponse<>(tokenResponse);
     }

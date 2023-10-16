@@ -23,12 +23,14 @@ public class ExtractPayloadArgumentResolver implements HandlerMethodArgumentReso
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-                                  NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
+    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 
         String token = AuthorizationExtractor.extractToken(request)
                 .orElseThrow(() -> BaseException.type(GlobalErrorCode.INVALID_PERMISSION));
+
+        if (token.isBlank() || token.isEmpty())
+            throw BaseException.type(GlobalErrorCode.INVALID_PERMISSION);
 
         validateTokenIntegrity(token);
 

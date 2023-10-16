@@ -13,6 +13,8 @@ public enum MemberErrorCode implements ErrorCode {
     DUPLICATE_EMAIL(HttpStatus.CONFLICT, "MEMBER_003", "이미 등록된 이메일입니다."),
     DUPLICATE_PHONE(HttpStatus.CONFLICT, "MEMBER_004", "이미 등록된 번호입니다."),
     DUPLICATE_NICKNAME(HttpStatus.CONFLICT, "MEMBER_005", "이미 등록된 닉네임입니다."),
+    MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "MEMBER_006", "회원을 찾을 수 없습니다."),
+    PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "MEMBER_007", "비밀번호가 일치하지 않습니다."),
     ;
 
     private final HttpStatus status;

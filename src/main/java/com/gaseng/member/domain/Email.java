@@ -3,6 +3,7 @@ package com.gaseng.member.domain;
 import com.gaseng.global.exception.BaseException;
 import com.gaseng.member.exception.MemberErrorCode;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import java.util.regex.Pattern;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
+@Builder
 public class Email {
     private static final String EMAIL_PATTERN = "^[a-zA-Z0-9_+&*-]+(?:\\." +
             "[a-zA-Z0-9_+&*-]+)*@" +

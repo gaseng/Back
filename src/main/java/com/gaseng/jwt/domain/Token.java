@@ -25,4 +25,12 @@ public class Token {
         this.memId = memId;
         this.refreshToken = refreshToken;
     }
+
+    public static Token generateToken(Long memId, String refreshToken) {
+        return new Token(memId, refreshToken);
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }

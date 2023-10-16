@@ -66,7 +66,7 @@ public class JwtTokenProvider {
         } catch (ExpiredJwtException e) {
             throw BaseException.type(GlobalErrorCode.EXPIRED_TOKEN);
         } catch (SecurityException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-            throw BaseException.type(GlobalErrorCode.INVALID_JWT);
+            throw BaseException.type(GlobalErrorCode.INVALID_TOKEN);
         }
     }
 

@@ -44,7 +44,7 @@ public class Password {
         return !PASSWORD_MATCHER.matcher(password).matches();
     }
 
-    public boolean isSamePassword(String comparePassword, PasswordEncoder encoder) {
-        return encoder.matches(comparePassword, this.value);
+    public boolean isSamePassword(String password, PasswordEncoder encoder) {
+        return encoder.matches(password, this.value);
     }
 }

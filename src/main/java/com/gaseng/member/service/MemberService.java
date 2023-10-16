@@ -52,6 +52,12 @@ public class MemberService {
         );
     }
 
+    @Transactional
+    public Long logout(Long memId) {
+        tokenService.deleteRefreshTokenByMemId(memId);
+        return memId;
+    }
+
     private void validateDuplicateMember(Email memEmail, String memPhone, String memNickname) {
         validateDuplicateEmail(memEmail);
         validateDuplicatePhone(memPhone);

@@ -1,5 +1,6 @@
 package com.gaseng.member.controller;
 
+import com.gaseng.global.annotation.ExtractPayload;
 import com.gaseng.global.common.BaseResponse;
 import com.gaseng.member.dto.LoginRequest;
 import com.gaseng.member.dto.LoginResponse;
@@ -27,5 +28,10 @@ public class MemberApiController {
     @PostMapping("/login")
     public BaseResponse<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
         return new BaseResponse<>(memberService.login(request.email(), request.password()));
+    }
+
+    @PostMapping("/logout")
+    public BaseResponse<Long> logout(@ExtractPayload Long memId) {
+        return new BaseResponse<>(memberService.logout(memId));
     }
 }

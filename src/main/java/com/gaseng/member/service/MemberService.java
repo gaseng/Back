@@ -3,7 +3,6 @@ package com.gaseng.member.service;
 import com.gaseng.global.exception.BaseException;
 import com.gaseng.member.domain.Email;
 import com.gaseng.member.domain.Member;
-import com.gaseng.member.domain.MemberStatus;
 import com.gaseng.member.exception.MemberErrorCode;
 import com.gaseng.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,19 +30,19 @@ public class MemberService {
     }
 
     private void validateDuplicateEmail(Email memEmail) {
-        if (memberRepository.existsByMemEmailAndMemStatus(memEmail, MemberStatus.NORMAL)) {
+        if (memberRepository.existsByMemEmail(memEmail)) {
             throw BaseException.type(MemberErrorCode.DUPLICATE_EMAIL);
         }
     }
 
     private void validateDuplicatePhone(String memPhone) {
-        if (memberRepository.existsByMemPhoneAndMemStatus(memPhone, MemberStatus.NORMAL)) {
+        if (memberRepository.existsByMemPhone(memPhone)) {
             throw BaseException.type(MemberErrorCode.DUPLICATE_PHONE);
         }
     }
 
     private void validateDuplicateNickname(String memNickname) {
-        if (memberRepository.existsByMemNicknameAndMemStatus(memNickname, MemberStatus.NORMAL)) {
+        if (memberRepository.existsByMemNickname(memNickname)) {
             throw BaseException.type(MemberErrorCode.DUPLICATE_NICKNAME);
         }
     }

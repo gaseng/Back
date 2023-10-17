@@ -21,6 +21,17 @@ public class SecurityConfig {
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final JwtRequestFilter jwtRequestFilter;
 
+    private static final String[] PERMIT_URL = {
+            /* member auth service */
+            "/member/sign-up",
+            "/member/login",
+
+            /* swagger */
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/swagger-ui/**"
+    };
+
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring().antMatchers("/css/**", "/script/**", "image/**", "/fonts/**", "lib/**");
@@ -41,8 +52,7 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
-                .antMatchers("/member/sign-up").permitAll()
-                .antMatchers("/member/login").permitAll()
+                .antMatchers(PERMIT_URL).permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

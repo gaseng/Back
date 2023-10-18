@@ -29,9 +29,10 @@ public class MemberApiController {
 
     @Operation(summary = "회원가입", description = "사용자가 회원가입을 진행합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "회원가입 성공", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
-            @ApiResponse(responseCode = "400", description = "이메일/비밀번호 형식이 올바르지 않습니다.", content = @Content(schema = @Schema(implementation = BaseResponse.class))),
-            @ApiResponse(responseCode = "409", description = "이미 등록된 이메일/전화번호/닉네임입니다.", content = @Content(schema = @Schema(implementation = BaseResponse.class)))
+            @ApiResponse(responseCode = "200", description = "회원가입 성공"),
+            @ApiResponse(responseCode = "400", description = "이메일/비밀번호 형식이 올바르지 않습니다."),
+            @ApiResponse(responseCode = "409", description = "이미 등록된 이메일/전화번호/닉네임입니다."),
+            @ApiResponse(responseCode = "500", description = "서버와의 연결에 실패했습니다.")
     })
     @PostMapping("/sign-up")
     public BaseResponse<Long> signUp(@RequestBody @Valid SignUpRequest request) {

@@ -29,7 +29,11 @@ public class SecurityConfig {
             /* swagger */
             "/v3/api-docs/**",
             "/swagger-resources/**",
-            "/swagger-ui/**"
+            "/swagger-ui/**",
+
+            /* checklist service */
+            "/checklist/create",
+            "/checklist/update"
     };
 
     @Bean

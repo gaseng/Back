@@ -5,6 +5,7 @@ import com.gaseng.global.annotation.ExtractToken;
 import com.gaseng.global.common.BaseResponse;
 import com.gaseng.jwt.dto.TokenResponse;
 import com.gaseng.jwt.service.TokenReissueService;
+import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Api(tags = "Token Api")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/token")

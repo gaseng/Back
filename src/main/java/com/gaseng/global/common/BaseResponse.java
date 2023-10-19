@@ -3,6 +3,7 @@ package com.gaseng.global.common;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.gaseng.global.exception.ErrorCode;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,9 +16,16 @@ import static com.gaseng.global.exception.GlobalErrorCode.SUCCESS;
 @AllArgsConstructor
 @JsonPropertyOrder({"status", "code", "message", "data"})
 public class BaseResponse<T> {
+    @Schema(description = "HTTP Status Code", example = "200")
     private int status;
+
+    @Schema(description = "HTTP Status Code Message", example = "SUCCESS")
     private String code;
+
+    @Schema(description = "Response Message", example = "요청에 성공했습니다.")
     private String message;
+
+    @Schema(description = "Response Data")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T data;
 

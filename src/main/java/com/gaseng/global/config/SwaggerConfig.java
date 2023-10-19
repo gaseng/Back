@@ -41,6 +41,7 @@ public class SwaggerConfig {
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(defaultAuth())
+                .forPaths(PathSelectors.regex("^(?!/member/sign-up|/member/login).*$"))
                 .build();
     }
 

@@ -27,7 +27,7 @@ public class MemberApiController {
 
     @Operation(summary = "회원가입", description = "사용자가 회원가입을 진행합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "회원가입 성공"),
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다."),
             @ApiResponse(responseCode = "400", description = "이메일/비밀번호 형식이 올바르지 않습니다."),
             @ApiResponse(responseCode = "409", description = "이미 등록된 이메일/전화번호/닉네임입니다."),
             @ApiResponse(responseCode = "500", description = "서버와의 연결에 실패했습니다.")
@@ -39,7 +39,7 @@ public class MemberApiController {
 
     @Operation(summary = "로그인", description = "사용자가 로그인을 진행합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "로그인 성공"),
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다."),
             @ApiResponse(responseCode = "401", description = "비밀번호가 일치하지 않습니다."),
             @ApiResponse(responseCode = "404", description = "회원을 찾을 수 없습니다."),
             @ApiResponse(responseCode = "500", description = "서버와의 연결에 실패했습니다.")
@@ -49,6 +49,12 @@ public class MemberApiController {
         return new BaseResponse<>(memberService.login(request.email(), request.password()));
     }
 
+    @Operation(summary = "로그아웃", description = "사용자가 로그아웃을 진행합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다."),
+            @ApiResponse(responseCode = "401", description = "자격 증명이 이루어지지 않았습니다."),
+            @ApiResponse(responseCode = "500", description = "서버와의 연결에 실패했습니다.")
+    })
     @PostMapping("/logout")
     public BaseResponse<Long> logout(@ExtractPayload Long memId) {
         return new BaseResponse<>(memberService.logout(memId));

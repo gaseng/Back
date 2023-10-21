@@ -65,4 +65,8 @@ public class Member extends BaseTimeEntity {
     public void toNormal() {
         this.memStatus = MemberStatus.NORMAL;
     }
+
+    public void toReject() {
+        this.memStatus = MemberStatus.REJECT;
+    }
 }

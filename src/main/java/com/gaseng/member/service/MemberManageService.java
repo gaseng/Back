@@ -23,8 +23,23 @@ public class MemberManageService {
         return member.getMemId();
     }
 
+    @Transactional
+    public Long toReject(Long memId) {
+        Member member = memberInfoService.findByMemId(memId);
+        validateIsStatusReject(member);
+        member.toReject();
+
+        return member.getMemId();
+    }
+
     private void validateIsStatusNormal(Member member) {
         if (member.getMemStatus().getValue().equals(MemberStatus.NORMAL)) {
+            throw BaseException.type(MemberErrorCode.IS_SAME_STATUS);
+        }
+    }
+
+    private void validateIsStatusReject(Member member) {
+        if (member.getMemStatus().getValue().equals(MemberStatus.REJECT)) {
             throw BaseException.type(MemberErrorCode.IS_SAME_STATUS);
         }
     }

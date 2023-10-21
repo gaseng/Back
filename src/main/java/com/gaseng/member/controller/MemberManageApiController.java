@@ -20,4 +20,9 @@ public class MemberManageApiController {
     public BaseResponse<Long> toNormal(@PathVariable Long memId) {
         return new BaseResponse<>(memberManageService.toNormal(memId));
     }
+
+    @PatchMapping("/reject/{memId}")
+    public BaseResponse<Long> toReject(@PathVariable Long memId) {
+        return new BaseResponse<>(memberManageService.toReject(memId));
+    }
 }

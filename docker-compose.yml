@@ -3,7 +3,7 @@ version: '3'
 services:
   gaseng:
     container_name: gaseng
-    build: .
+    image: kiwijomn/gaseng
     expose:
       - 8080
     ports:

@@ -22,3 +22,25 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
+
+jwt:
+  secret: ${JWT_SECRET}
+  access-token-validity: 2592000
+  refresh-token-validity: 2592000
+
+cloud:
+  aws:
+    s3:
+      bucket: ${S3_BUCKET_NAME}
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      accessKey: ${S3_ACCESS_KEY}
+      secretKey: ${S3_SECRET_KEY}
+
+logging:
+  level:
+    com:
+      amazonaws:
+        util:
+          EC2MetadataUtils: error

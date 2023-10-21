@@ -31,8 +31,14 @@ public class MemberManageApiController {
         return new BaseResponse<>(memberManageService.toNormal(memId));
     }
 
+    @Operation(summary = "사용자 상태 REJECT로 변경", description = "사용자의 상태를 REJECT로 변경합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다."),
+            @ApiResponse(responseCode = "409", description = "요청과 동일한 상태입니다."),
+            @ApiResponse(responseCode = "500", description = "서버와의 연결에 실패했습니다.")
+    })
     @PatchMapping("/reject/{memId}")
-    public BaseResponse<Long> toReject(@PathVariable Long memId) {
+    public BaseResponse<Long> toReject(@Parameter(description = "memberId", required = true, example = "1") @PathVariable Long memId) {
         return new BaseResponse<>(memberManageService.toReject(memId));
     }
 }

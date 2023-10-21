@@ -24,7 +24,7 @@ jobs:
       run: |
         cd ./src/main/resources
         touch ./application.yaml
-        echo "${{ secrets.MAIN_YML }}" > ./application.yml
+        echo "${{ secrets.MAIN_YML }}" >> ./application.yml
       shell: bash
 
     - name: Build with Gradle

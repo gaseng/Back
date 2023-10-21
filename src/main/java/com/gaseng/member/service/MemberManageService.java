@@ -3,16 +3,25 @@ package com.gaseng.member.service;
 import com.gaseng.global.exception.BaseException;
 import com.gaseng.member.domain.Member;
 import com.gaseng.member.domain.MemberStatus;
+import com.gaseng.member.dto.AccountResponse;
 import com.gaseng.member.exception.MemberErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.gaseng.member.dto.AccountResponse.toResponse;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberManageService {
     private final MemberInfoService memberInfoService;
+
+    public AccountResponse getAccount(Long memId) {
+        Member member = memberInfoService.findByMemId(memId);
+
+        return toResponse(member);
+    }
 
     @Transactional
     public Long toNormal(Long memId) {

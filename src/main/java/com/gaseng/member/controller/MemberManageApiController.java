@@ -1,6 +1,7 @@
 package com.gaseng.member.controller;
 
 import com.gaseng.global.common.BaseResponse;
+import com.gaseng.member.dto.AccountResponse;
 import com.gaseng.member.service.MemberManageService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,10 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "Member Manage Api")
 @RestController
@@ -19,6 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/member")
 public class MemberManageApiController {
     private final MemberManageService memberManageService;
+
+    @GetMapping("/{memId}")
+    public BaseResponse<AccountResponse> getAccount(@PathVariable Long memId) {
+        return new BaseResponse<>(memberManageService.getAccount(memId));
+    }
 
     @Operation(summary = "사용자 상태 NORMAL로 변경", description = "사용자의 상태를 NORMAL로 변경합니다.")
     @ApiResponses(value = {

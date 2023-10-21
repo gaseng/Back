@@ -18,8 +18,14 @@ import org.springframework.web.bind.annotation.*;
 public class MemberManageApiController {
     private final MemberManageService memberManageService;
 
+    @Operation(summary = "사용자 정보 조회", description = "사용자의 계정 정보를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다."),
+            @ApiResponse(responseCode = "404", description = "회원을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "500", description = "서버와의 연결에 실패했습니다.")
+    })
     @GetMapping("/{memId}")
-    public BaseResponse<AccountResponse> getAccount(@PathVariable Long memId) {
+    public BaseResponse<AccountResponse> getAccount(@Parameter(description = "memberId", required = true, example = "1") @PathVariable Long memId) {
         return new BaseResponse<>(memberManageService.getAccount(memId));
     }
 

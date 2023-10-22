@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +50,7 @@ public class MemberApiController {
         return new BaseResponse<>(memberService.login(request.email(), request.password()));
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @Operation(summary = "로그아웃", description = "사용자가 로그아웃을 진행합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다."),

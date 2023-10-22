@@ -51,5 +51,6 @@ jobs:
             sudo docker rm -f $(docker ps -qa)
             docker rmi ${{ secrets.DOCKER_USERNAME }}/gaseng
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/gaseng
-            docker-compose up -d
+            sudo chmod -R 755 /root/docker
+            sudo docker-compose -f "/root/docker/docker-compose.yml" up -d
             docker image prune -f

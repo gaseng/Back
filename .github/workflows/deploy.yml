@@ -39,11 +39,6 @@ jobs:
           docker build -t ${{ secrets.DOCKER_USERNAME }}/gaseng .
           docker push ${{ secrets.DOCKER_USERNAME }}/gaseng
 
-      - name: Copy docker-compose.yml
-        run: |
-          chmod +x ./docker-compose.yml
-          cp ./docker-compose.yml docker-compose.yml
-
       - name: Deploy to server
         uses: appleboy/ssh-action@master
         id: deploy

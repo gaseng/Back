@@ -13,6 +13,9 @@ public record LoginResponse(
         String accessToken,
         
         @Schema(description = "refresh token", example = "eyABCDciOiJIUzI1NiJ9.abcdefg6NSwiaWF0IjoxNjk3NjgwMDM5LCJleHAiOjE3Mxyz987wMzl9.0mjwFO6Jtqz616yprPgGm-2XWY60G2YH6HbTwU123q0")
-        String refreshToken
+        String refreshToken,
+
+        @Schema(description = "member status", example = "노멀/대기/거절")
+        String status
 ) {
 }

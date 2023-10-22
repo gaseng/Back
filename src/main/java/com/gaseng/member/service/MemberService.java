@@ -48,7 +48,8 @@ public class MemberService {
                 member.getMemId(),
                 member.getMemEmail().getValue(),
                 accessToken,
-                refreshToken
+                refreshToken,
+                member.getMemStatus().getValue()
         );
     }
 

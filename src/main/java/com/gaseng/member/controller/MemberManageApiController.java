@@ -21,8 +21,15 @@ public class MemberManageApiController {
     private final MemberManageService memberManageService;
 
     @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "사용자 목록 조회", description = "전체 사용자 목록을 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "요청에 성공했습니다."),
+            @ApiResponse(responseCode = "500", description = "서버와의 연결에 실패했습니다.")
+    })
     @GetMapping("")
-    public BaseResponse<MemberListResponse> getMemberList(@RequestParam(value = "page") int pageSize,
+    public BaseResponse<MemberListResponse> getMemberList(@Parameter(description = "size of page", required = true, example = "10")
+                                                          @RequestParam(value = "page") int pageSize,
+                                                          @Parameter(description = "last member id in the list (default = -1)", example = "10")
                                                           @RequestParam(value = "index", defaultValue = "-1", required = false) Long lastMemId) {
         return new BaseResponse<>(memberManageService.getMemberList(pageSize, lastMemId));
     }

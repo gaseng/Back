@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "Member Manage Api")
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberManageApiController {
     private final MemberManageService memberManageService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "사용자 정보 조회", description = "사용자의 계정 정보를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다."),
@@ -29,6 +31,7 @@ public class MemberManageApiController {
         return new BaseResponse<>(memberManageService.getAccount(memId));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "사용자 상태 NORMAL로 변경", description = "사용자의 상태를 NORMAL로 변경합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다."),
@@ -40,6 +43,7 @@ public class MemberManageApiController {
         return new BaseResponse<>(memberManageService.toNormal(memId));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "사용자 상태 REJECT로 변경", description = "사용자의 상태를 REJECT로 변경합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청에 성공했습니다."),

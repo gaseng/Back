@@ -2,6 +2,7 @@ package com.gaseng.member.controller;
 
 import com.gaseng.global.common.BaseResponse;
 import com.gaseng.member.dto.AccountResponse;
+import com.gaseng.member.dto.MemberListResponse;
 import com.gaseng.member.service.MemberManageService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +19,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/member")
 public class MemberManageApiController {
     private final MemberManageService memberManageService;
+
+    @GetMapping("")
+    public BaseResponse<MemberListResponse> getMemberList(@RequestParam(value = "index", required = false, defaultValue = "-1") Long lastMemId) {
+        return new BaseResponse<>(memberManageService.getMemberList(lastMemId));
+    }
 
     @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "사용자 정보 조회", description = "사용자의 계정 정보를 조회합니다.")

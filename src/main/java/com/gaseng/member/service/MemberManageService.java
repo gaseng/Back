@@ -8,9 +8,12 @@ import com.gaseng.member.dto.AccountResponse;
 import com.gaseng.member.dto.MemberListResponse;
 import com.gaseng.member.exception.MemberErrorCode;
 import com.gaseng.member.repository.MemberRepository;
+import com.gaseng.member.repository.query.MemberListQueryProjection;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static com.gaseng.member.dto.AccountResponse.toResponse;
 
@@ -21,9 +24,11 @@ public class MemberManageService {
     private final MemberInfoService memberInfoService;
     private final MemberRepository memberRepository;
 
-    public MemberListResponse getMemberList(Long lastMemId) {
-        memberRepository.findAllByMemRole(Role.USER);
-        return new MemberListResponse();
+    public MemberListResponse getMemberList(int pageSize, Long lastMemId) {
+        List<MemberListQueryProjection> members = memberRepository.findMemberByMemRole(Role.USER);
+        int lastIndex = getLastIndex(members, lastMemId);
+
+        return getMemberListResponse(members, lastIndex, pageSize);
     }
 
     public AccountResponse getAccount(Long memId) {
@@ -48,6 +53,22 @@ public class MemberManageService {
         member.toReject();
 
         return member.getMemId();
+    }
+
+    private int getLastIndex(List<MemberListQueryProjection> members, Long lastMemId) {
+        return members.indexOf(
+                members.stream()
+                        .filter(memberListQuery -> memberListQuery.getMemId().equals(lastMemId))
+                        .findFirst()
+                        .orElse(null)
+        );
+    }
+
+    private MemberListResponse getMemberListResponse(List<MemberListQueryProjection> members, int lastIndex, int size) {
+        if (lastIndex + 1 + size >= members.size()) {
+            return new MemberListResponse(members.subList(lastIndex + 1, members.size()));
+        }
+        return new MemberListResponse(members.subList(lastIndex + 1, lastIndex + 1 + size));
     }
 
     private void validateIsStatusNormal(Member member) {

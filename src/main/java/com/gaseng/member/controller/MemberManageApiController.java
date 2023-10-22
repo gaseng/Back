@@ -21,8 +21,9 @@ public class MemberManageApiController {
     private final MemberManageService memberManageService;
 
     @GetMapping("")
-    public BaseResponse<MemberListResponse> getMemberList(@RequestParam(value = "index", required = false, defaultValue = "-1") Long lastMemId) {
-        return new BaseResponse<>(memberManageService.getMemberList(lastMemId));
+    public BaseResponse<MemberListResponse> getMemberList(@RequestParam(value = "page") int pageSize,
+                                                          @RequestParam(value = "index", defaultValue = "-1", required = false) Long lastMemId) {
+        return new BaseResponse<>(memberManageService.getMemberList(pageSize, lastMemId));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberManageApiController {
     private final MemberManageService memberManageService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("")
     public BaseResponse<MemberListResponse> getMemberList(@RequestParam(value = "page") int pageSize,
                                                           @RequestParam(value = "index", defaultValue = "-1", required = false) Long lastMemId) {

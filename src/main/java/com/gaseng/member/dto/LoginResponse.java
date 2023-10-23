@@ -16,6 +16,9 @@ public record LoginResponse(
         String refreshToken,
 
         @Schema(description = "member status", example = "노멀/대기/거절")
-        String status
+        String status,
+
+        @Schema(description = "member role", example = "유저/관리자")
+        String role
 ) {
 }

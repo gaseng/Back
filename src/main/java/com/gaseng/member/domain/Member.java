@@ -1,6 +1,5 @@
 package com.gaseng.member.domain;
 
-import com.gaseng.chat.domain.ChatRoom;
 import com.gaseng.global.common.BaseTimeEntity;
 import com.gaseng.sharehouse.domain.Sharehouse;
 import lombok.AccessLevel;
@@ -41,9 +40,6 @@ public class Member extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Sharehouse> sharehouses = new ArrayList<>();
-
-    @OneToMany(mappedBy = "member")
-    private List<ChatRoom> chatRooms = new ArrayList<>();
 
     @Builder
     private Member(Email memEmail, Password memPassword, String memName, String memNickname, Sex memSex, String memPhone) {

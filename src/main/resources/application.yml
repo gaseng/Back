@@ -1,4 +1,21 @@
 spring:
+  profiles:
+    active: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+---
+spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${RDS_HOST}:3306/gaseng
@@ -14,10 +31,6 @@ spring:
         show_sql: false
         format_sql: true
         default_batch_fetch_size: 50
-  
-  config:
-    import:
-      - classpath:secret.yml
 
   mvc:
     pathmatch:

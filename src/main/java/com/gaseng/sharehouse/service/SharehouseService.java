@@ -139,4 +139,10 @@ public class SharehouseService {
 		return sharehouseRepository.findByShrId(shrId)
 				.orElseThrow(() -> BaseException.type(SharehouseErrorCode.SHAREHOUSE_NOT_FOUND));
 	}
+
+	public List<Sharehouse> getSharehousesByCursorScroll(Long memId, int page, int size) {
+		// 커서 기반의 스크롤 쿼리를 실행하여 데이터를 가져옵니다.
+		List<Sharehouse> sharehouses = sharehouseRepository.getSharehousesByCursorScroll(memId, page, size);
+		return sharehouses;
+	}
 }

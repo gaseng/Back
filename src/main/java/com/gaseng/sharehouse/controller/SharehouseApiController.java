@@ -2,6 +2,7 @@ package com.gaseng.sharehouse.controller;
 
 import com.gaseng.global.annotation.ExtractPayload;
 import com.gaseng.global.common.BaseResponse;
+import com.gaseng.sharehouse.domain.Sharehouse;
 import com.gaseng.sharehouse.dto.SharehouseDeleteRequest;
 import com.gaseng.sharehouse.dto.SharehouseRequest;
 import com.gaseng.sharehouse.dto.SharehouseResponse;
@@ -64,5 +65,12 @@ public class SharehouseApiController {
             @RequestBody @Valid SharehouseDeleteRequest request
     ) {
         return new BaseResponse<>(sharehouseService.deleteSharehouse(memId, request.id()));
+    }
+
+    @Operation(summary = "내가 쓴 글 보기", description = "사용자가 내가 쓴 글을 조회합니다.")
+    @GetMapping("/myshare")
+    public BaseResponse<List<Sharehouse>> mySharehouses(@ExtractPayload Long memId, @RequestParam int page, @RequestParam int size) {
+        // 서비스에서 커서 기반의 스크롤 로직을 사용하여 데이터를 가져옵니다.
+        return new BaseResponse<>(sharehouseService.getSharehousesByCursorScroll(memId, page, size));
     }
 }

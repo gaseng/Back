@@ -1,5 +1,7 @@
 package com.gaseng.member.service;
 
+import com.gaseng.file.domain.File;
+import com.gaseng.file.domain.ShareFile;
 import com.gaseng.global.exception.BaseException;
 import com.gaseng.jwt.service.TokenService;
 import com.gaseng.jwt.util.JwtTokenProvider;
@@ -9,9 +11,17 @@ import com.gaseng.member.domain.Password;
 import com.gaseng.member.dto.LoginResponse;
 import com.gaseng.member.exception.MemberErrorCode;
 import com.gaseng.member.repository.MemberRepository;
+import com.gaseng.certification.service.MessageService;
+import com.gaseng.sharehouse.domain.Sharehouse;
+import com.gaseng.sharehouse.repository.SharehouseRepository;
+import com.gaseng.sharehouse.service.SharehouseService;
 import lombok.RequiredArgsConstructor;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import static com.gaseng.certification.domain.Search.ID;
+import static com.gaseng.certification.domain.Search.PW;
+import java.util.List;
 
 import static com.gaseng.member.domain.Password.ENCODER;
 
@@ -21,6 +31,9 @@ import static com.gaseng.member.domain.Password.ENCODER;
 public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberInfoService memberInfoService;
+    private final MessageService messageService;
+    private final SharehouseService sharehouseService;
+    private final SharehouseRepository sharehouseRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final TokenService tokenService;
 
@@ -56,6 +69,52 @@ public class MemberService {
 
     @Transactional
     public Long logout(Long memId) {
+        tokenService.deleteRefreshTokenByMemId(memId);
+        return memId;
+    }
+
+    @Transactional
+    public Long searchId(String memName, String memPhone) throws CoolsmsException {
+        if (memberRepository.existsByMemPhone(memPhone)) {
+            Member member = memberRepository.findByMemPhone(memPhone);
+            if(member.getMemName().equals(memName)){
+                messageService.sendMessage(member.getMemPhone(),member,ID);
+                return member.getMemId();
+            }
+        }
+        throw BaseException.type(MemberErrorCode.MEMBER_NOT_FOUND);
+    }
+
+    @Transactional
+    public Long changePw(String memName, String memPhone, String memEmail) throws CoolsmsException {
+        if (memberRepository.existsByMemPhone(memPhone)) {
+            Member member = memberRepository.findByMemPhone(memPhone);
+            if(member.getMemName().equals(memName)){
+                if(member.getMemEmail().getValue().equals(memEmail)) {
+                    messageService.sendMessage(member.getMemPhone(),member,PW);
+                    return member.getMemId();
+                }
+            }throw BaseException.type(MemberErrorCode.MEMBER_NOT_FOUND);
+        }
+        throw BaseException.type(MemberErrorCode.MEMBER_NOT_FOUND);
+    }
+
+    @Transactional
+    public Long pwUpdate(Long memId, String newPassword){
+        Member member = memberRepository.findByMemId(memId).get();
+        Password password = Password.encrypt(newPassword, ENCODER);
+        member.pwUpdate(password);
+        memberRepository.save(member);
+        return member.getMemId();
+    }
+    @Transactional
+    public Long signOut(Long memId) {
+        Member member = memberRepository.findByMemId(memId).get();
+        List<Sharehouse> shareHouses = sharehouseRepository.findByMember(member);
+        for (Sharehouse shareHouse : shareHouses) {
+            sharehouseService.deleteSharehouse(memId,shareHouse.getShrId());
+        }
+        memberRepository.delete(member);
         tokenService.deleteRefreshTokenByMemId(memId);
         return memId;
     }

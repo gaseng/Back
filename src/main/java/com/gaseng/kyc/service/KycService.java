@@ -10,7 +10,7 @@ import com.gaseng.kyc.dto.KycSubmitRequest;
 import com.gaseng.kyc.repository.KycRequireRepository;
 import com.gaseng.member.domain.Member;
 import com.gaseng.member.domain.MemberStatus;
-import com.gaseng.member.service.MemberInfoService;
+import com.gaseng.member.service.MemberFindService;
 import com.gaseng.sharehouse.service.S3Uploader;
 
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class KycService {
-	private final MemberInfoService memberInfoService;
+	private final MemberFindService memberfindService;
 	private final KycRequireRepository kycRequireRepository;
 	private final S3Uploader s3Uploader;
 	
@@ -30,7 +30,7 @@ public class KycService {
 		
 		// member 가져오기
 		// member status 대기로 변경
-		Member member = memberInfoService.findByMemId(memId);
+		Member member = memberfindService.findByMemId(memId);
 		member.setStatus(MemberStatus.WAITING);
 		
 		// 신분증, 얼굴사진 s3에 업로드

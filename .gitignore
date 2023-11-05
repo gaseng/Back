@@ -38,3 +38,4 @@ out/
 
 ### Config ###
 src/main/resources/secret.yml
+.DS_Store

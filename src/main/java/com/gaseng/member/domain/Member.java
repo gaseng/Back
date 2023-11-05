@@ -61,6 +61,10 @@ public class Member extends BaseTimeEntity {
             Email memEmail, Password memPassword, String memName, String memNickname, Sex memSex, String memPhone) {
         return new Member(memEmail, memPassword, memName, memNickname, memSex, memPhone);
     }
+    
+    public void setStatus(MemberStatus status) {
+    	this.memStatus = status;
+    }
 
     public void toNormal() {
         this.memStatus = MemberStatus.NORMAL;

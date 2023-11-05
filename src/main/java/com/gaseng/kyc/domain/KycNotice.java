@@ -3,6 +3,7 @@ package com.gaseng.kyc.domain;
 import com.gaseng.global.common.BaseTimeEntity;
 import com.gaseng.member.domain.Member;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,4 +29,12 @@ public class KycNotice extends BaseTimeEntity {
     private KycNoticeStatus kycnStatus;
 
     private String kycnDescription;
+    
+    @Builder
+    public KycNotice(Member member, KycRequire kycRequire, KycNoticeStatus kycnStatus, String kycnDescription) {
+    	this.member = member;
+    	this.kycRequire = kycRequire;
+    	this.kycnStatus = kycnStatus;
+    	this.kycnDescription = kycnDescription;
+    }
 }

@@ -1,5 +1,6 @@
 package com.gaseng.sharehouse.service;
 
+import com.gaseng.checklist.repository.ChecklistRepository;
 import com.gaseng.file.domain.File;
 import com.gaseng.file.domain.ShareFile;
 import com.gaseng.file.repository.FileRepository;
@@ -9,10 +10,7 @@ import com.gaseng.member.domain.Member;
 import com.gaseng.member.service.MemberInfoService;
 import com.gaseng.sharehouse.domain.Sharehouse;
 import com.gaseng.sharehouse.domain.SharehouseStatus;
-import com.gaseng.sharehouse.dto.SharehouseListResponse;
-import com.gaseng.sharehouse.dto.SharehouseRequest;
-import com.gaseng.sharehouse.dto.SharehouseResponse;
-import com.gaseng.sharehouse.dto.SharehouseUpdateRequest;
+import com.gaseng.sharehouse.dto.*;
 import com.gaseng.sharehouse.exception.SharehouseErrorCode;
 import com.gaseng.sharehouse.repository.SharehouseRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,21 +30,23 @@ import java.util.List;
 public class SharehouseService {
     private final SharehouseRepository sharehouseRepository;
 	private final ShareFileRepository shareFileRepository;
+	private final ChecklistRepository checklistRepository;
     private final SharehouseImageService sharehouseImageService;
 	private final FileRepository fileRepository;
 	private final MemberInfoService memberInfoService;
 
-    public SharehouseResponse get(Long shrId) {
+    public SharehouseDetailResponse get(Long shrId) {
 		Sharehouse sharehouse = findSharehouseByShrId(shrId);
-    	
+		Long chkId = checklistRepository.findByMember(sharehouse.getMember()).getChkId();
     	List<String> paths = new ArrayList<>();
     	for (ShareFile shareFile : sharehouse.getShareFiles()) {
     		paths.add(shareFile.getFile().getFilePath());
     	}
     	
-		return new SharehouseResponse(
+		return new SharehouseDetailResponse(
 				shrId,
 				sharehouse.getMember().getMemId(),
+				chkId,
 				sharehouse.getShrTitle(),
 				sharehouse.getShrDescription(),
 				sharehouse.getShrAddress(),
@@ -56,9 +56,9 @@ public class SharehouseService {
 		);
 	}
     
-    public List<SharehouseResponse> getAll() {
+    public List<SharehouseResponse> getAll(int pageSize,Long lastShrId){
     	List<SharehouseResponse> responses = new ArrayList<>();
-    	List<Sharehouse> sharehouses = sharehouseRepository.findAll();
+    	List<Sharehouse> sharehouses = sharehouseRepository.findAllOrderByCreatedDateDesc();
     	
     	for (Sharehouse sharehouse : sharehouses) {
     		List<String> paths = new ArrayList<>();
@@ -77,10 +77,25 @@ public class SharehouseService {
     				paths
         	));
     	}
-    	
-		return responses;
+		int lastIndex = getLastIndex(responses, lastShrId);
+		return getShareListResponse(responses, lastIndex, pageSize);
 	}
-    
+
+	private int getLastIndex(List<SharehouseResponse> sharehouses, Long lastShrId) {
+		return sharehouses.indexOf(
+				sharehouses.stream()
+						.filter(sharehouse -> sharehouse.id().equals(lastShrId))
+						.findFirst()
+						.orElse(null)
+		);
+	}
+	private List<SharehouseResponse> getShareListResponse(List<SharehouseResponse> responses, int lastIndex, int size) {
+		if (lastIndex + 1 + size >= responses.size()) {
+			return responses.subList(lastIndex + 1, responses.size());
+		}
+		return responses.subList(lastIndex + 1, lastIndex + 1 + size);
+	}
+
     public Long create(Long memId, MultipartFile poster, SharehouseRequest request) throws IOException {
 		Member member = memberInfoService.findByMemId(memId);
 		Sharehouse sharehouse = Sharehouse.builder()
@@ -167,4 +182,5 @@ public class SharehouseService {
 		}
 		return responses;
 	}
+
 }

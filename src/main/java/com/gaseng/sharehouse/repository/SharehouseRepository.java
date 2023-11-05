@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,6 +17,8 @@ public interface SharehouseRepository extends JpaRepository<Sharehouse,Long> {
     Optional<Sharehouse> findByShrId(Long shrId);
     List<Sharehouse> findByMember(Member member);
     List<Sharehouse> findByMemberOrderByCreatedDateDesc(Member member);
+    @Query("SELECT s FROM Sharehouse s ORDER BY s.createdDate DESC")
+    List<Sharehouse> findAllOrderByCreatedDateDesc();
 
     Slice<SharehouseListResponse> findByMemberOrderByShrIdDesc(Member member, Pageable pageable);
 

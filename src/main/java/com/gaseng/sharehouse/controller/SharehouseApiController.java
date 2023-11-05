@@ -6,6 +6,7 @@ import com.gaseng.sharehouse.domain.Sharehouse;
 import com.gaseng.sharehouse.dto.*;
 import com.gaseng.sharehouse.service.SharehouseService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,18 +26,24 @@ import java.util.List;
 public class SharehouseApiController {
     private final SharehouseService sharehouseService;
     
-    @Operation(summary = "쉐어하우스 글 조회", description = "사용자가 쉐어하우스 글을 조회합니다.")
+    @Operation(summary = "쉐어하우스 글 상세 조회", description = "사용자가 쉐어하우스 글을 상세 조회합니다.")
     @GetMapping(value = "")
-    public BaseResponse<SharehouseResponse> get(
+    public BaseResponse<SharehouseDetailResponse> get(
     		@RequestParam(value = "id") Long shrId
     ) {
     	return new BaseResponse<>(sharehouseService.get(shrId));
     }
     
-    @Operation(summary = "쉐어하우스 글 조회", description = "사용자가 쉐어하우스 글을 조회합니다.")
+    @Operation(summary = "쉐어하우스 글 목록 조회", description = "사용자가 쉐어하우스 글 목록을 조회합니다.")
     @GetMapping(value = "/all")
-    public BaseResponse<List<SharehouseResponse>> getAll() {
-    	return new BaseResponse<>(sharehouseService.getAll());
+    public BaseResponse<List<SharehouseResponse>> getAll(
+            @Parameter(description = "size of page", required = true, example = "10")
+            @RequestParam(value = "page") int pageSize,
+            @Parameter(description = "last sharehouse id in the list (default = -1)", example = "10")
+            @RequestParam(value = "index", defaultValue = "-1", required = false) Long lastShrId) {
+
+
+    	return new BaseResponse<>(sharehouseService.getAll(pageSize, lastShrId));
     }
 
     @Operation(summary = "쉐어하우스 글 생성", description = "사용자가 쉐어하우스 글을 작성합니다.")

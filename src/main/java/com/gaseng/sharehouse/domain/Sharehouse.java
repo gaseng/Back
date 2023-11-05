@@ -25,7 +25,6 @@ public class Sharehouse extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mem_id", nullable = false)
     private Member member;
-
     private String shrTitle;
 
     private String shrDescription;

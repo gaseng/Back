@@ -47,9 +47,10 @@ public class ChatRoomApiController {
             @ApiResponse(responseCode = "500", description = "서버와의 연결에 실패했습니다.")
     })
     @PostMapping("/{chatRoomId}")
-    public BaseResponse<ChatRoomEnterResponse> enterChatRoom(@Parameter(description = "chatroom id", required = true, example = "1")
+    public BaseResponse<ChatRoomEnterResponse> enterChatRoom(@ExtractPayload Long memId,
+                                                             @Parameter(description = "chatroom id", required = true, example = "1")
                                                              @PathVariable Long chatRoomId) {
-        return new BaseResponse<>(chatRoomService.enterChatRoom(chatRoomId));
+        return new BaseResponse<>(chatRoomService.enterChatRoom(memId, chatRoomId));
     }
 
     @PreAuthorize("hasRole('USER')")
@@ -61,11 +62,12 @@ public class ChatRoomApiController {
             @ApiResponse(responseCode = "500", description = "서버와의 연결에 실패했습니다.")
     })
     @PatchMapping("/{chatRoomId}")
-    public BaseResponse<Long> updateMessage(@Parameter(description = "chatroom id", required = true, example = "1")
+    public BaseResponse<Long> updateMessage(@ExtractPayload Long memId,
+                                            @Parameter(description = "chatroom id", required = true, example = "1")
                                             @PathVariable Long chatRoomId,
                                             @Parameter(description = "message content", required = true, example = "hello")
                                             @RequestBody String message) {
-        return new BaseResponse<>(chatRoomService.updateMessage(chatRoomId, message));
+        return new BaseResponse<>(chatRoomService.updateMessage(memId, chatRoomId, message));
     }
 
     @PreAuthorize("hasRole('USER')")

@@ -52,7 +52,8 @@ public class ChatRoomService {
         );
     }
 
-    public ChatRoomEnterResponse enterChatRoom(Long chatRoomId) {
+    public ChatRoomEnterResponse enterChatRoom(Long memId, Long chatRoomId) {
+        chatRoomFindService.findByMemIdAndChatRoomId(memId, chatRoomId);
         ChatRoom chatRoom = chatRoomFindService.findByChatRoomId(chatRoomId);
 
         return new ChatRoomEnterResponse(
@@ -63,8 +64,10 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public Long updateMessage(Long chatRoomId, String message) {
+    public Long updateMessage(Long memId, Long chatRoomId, String message) {
+        chatRoomFindService.findByMemIdAndChatRoomId(memId, chatRoomId);
         ChatRoom chatRoom = chatRoomFindService.findByChatRoomId(chatRoomId);
+
         validateActiveChatRoom(chatRoom);
         chatRoom.updateMessage(message);
 

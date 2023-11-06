@@ -79,7 +79,7 @@ public class ChatRoomService {
         List<ChatRoomListQueryProjection> chatRooms = memberChatRoomRepository.findChatRoomsByMemId(memId);
 
         List<ChatRoomListResponse> chatRoomList = chatRooms.stream()
-                .map(chatRoom -> filterMemberAndFormatTime(member, chatRoom))
+                .map(chatRoom -> mapChatRoomToResponse(member, chatRoom))
                 .collect(Collectors.toList());
 
         int lastIndex = getLastIndex(chatRoomList, lastChatRoomId);
@@ -110,7 +110,7 @@ public class ChatRoomService {
         }
     }
 
-    private ChatRoomListResponse filterMemberAndFormatTime(Member member, ChatRoomListQueryProjection chatRoom) {
+    private ChatRoomListResponse mapChatRoomToResponse(Member member, ChatRoomListQueryProjection chatRoom) {
         String partnerNickname = filterPartnerNickname(member, chatRoom);
         String formattedTime = formatModifiedDate(chatRoom);
 

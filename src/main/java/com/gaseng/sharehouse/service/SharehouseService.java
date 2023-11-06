@@ -6,6 +6,7 @@ import com.gaseng.file.domain.ShareFile;
 import com.gaseng.file.repository.FileRepository;
 import com.gaseng.file.repository.ShareFileRepository;
 import com.gaseng.global.exception.BaseException;
+import com.gaseng.global.util.LocalDateTimeFormatter;
 import com.gaseng.member.domain.Member;
 import com.gaseng.member.service.MemberFindService;
 import com.gaseng.sharehouse.domain.Sharehouse;
@@ -45,8 +46,13 @@ public class SharehouseService {
     	
 		return new SharehouseDetailResponse(
 				shrId,
-				sharehouse.getMember().getMemId(),
-				chkId,
+				sharehouse.getMember().getMemName(),
+				sharehouse.getMember().getChecklist().getChkCigarette(),
+				sharehouse.getMember().getChecklist().getChkSleepingHabit(),
+				sharehouse.getMember().getChecklist().getChkType(),
+				sharehouse.getMember().getChecklist().getChkMbti(),
+				sharehouse.getMember().getChecklist().getChkCallPlace(),
+				sharehouse.getMember().getChecklist().getChkSleepTime(),
 				sharehouse.getShrTitle(),
 				sharehouse.getShrDescription(),
 				sharehouse.getShrAddress(),
@@ -66,9 +72,12 @@ public class SharehouseService {
         		paths.add(shareFile.getFile().getFilePath());
         	}
         	
+        	String formattedTime = LocalDateTimeFormatter.formatTimeDifference(sharehouse.getCreatedDate());
+        	
         	responses.add(new SharehouseResponse(
         			sharehouse.getShrId(),
-        			sharehouse.getMember().getMemId(),
+        			sharehouse.getMember().getMemNickname(),
+        			formattedTime,
         			sharehouse.getShrTitle(), 
         			sharehouse.getShrDescription(), 
         			sharehouse.getShrAddress(), 

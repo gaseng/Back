@@ -4,7 +4,8 @@ import java.util.List;
 
 public record SharehouseResponse (
 		Long id,
-		Long memId,
+		String name,
+		String createdAt,
 		String title,
 		String description,
 		String address,

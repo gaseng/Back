@@ -1,13 +1,10 @@
 package com.gaseng.sharehouse.service;
 
 import com.gaseng.global.exception.BaseException;
-import com.gaseng.member.domain.Email;
 import com.gaseng.member.domain.Member;
-import com.gaseng.member.exception.MemberErrorCode;
 import com.gaseng.member.service.MemberFindService;
 import com.gaseng.sharehouse.domain.Scrap;
 import com.gaseng.sharehouse.domain.Sharehouse;
-import com.gaseng.sharehouse.dto.ScrapRequest;
 import com.gaseng.sharehouse.dto.SharehouseListResponse;
 import com.gaseng.sharehouse.exception.SharehouseErrorCode;
 import com.gaseng.sharehouse.repository.ScrapRepository;

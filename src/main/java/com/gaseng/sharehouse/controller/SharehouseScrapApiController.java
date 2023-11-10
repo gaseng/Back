@@ -4,7 +4,6 @@ import com.gaseng.global.annotation.ExtractPayload;
 import com.gaseng.global.common.BaseResponse;
 import com.gaseng.sharehouse.dto.ScrapRequest;
 import com.gaseng.sharehouse.dto.SharehouseListResponse;
-import com.gaseng.sharehouse.dto.SharehouseRequest;
 import com.gaseng.sharehouse.service.ScrapService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

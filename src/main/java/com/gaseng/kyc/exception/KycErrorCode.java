@@ -11,6 +11,7 @@ public enum KycErrorCode implements ErrorCode {
 	KYC_REQUIRE_NOT_FOUND(HttpStatus.NOT_FOUND, "KYC_001", "KYC 요청을 찾을 수 없습니다."),
 	KYC_REQUIRE_INACTIVE(HttpStatus.NOT_FOUND, "KYC_002", "비활성화된 KYC 요청입니다."),
 	KYC_NOTICE_NOT_FOUND(HttpStatus.NOT_FOUND, "KYC_003", "공지가 없습니다."),
+    KYC_REQUIRE_MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "KYC_004", "일치하는 회원이 없습니다."),
     ;
 
     private final HttpStatus status;

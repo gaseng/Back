@@ -1,11 +1,5 @@
 package com.gaseng.kyc.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.gaseng.global.exception.BaseException;
 import com.gaseng.kyc.domain.Kyc;
 import com.gaseng.kyc.domain.KycNotice;
@@ -15,25 +9,33 @@ import com.gaseng.kyc.dto.KycRequireResponse;
 import com.gaseng.kyc.dto.KycRequireSummaryResponse;
 import com.gaseng.kyc.dto.KycSaveRequest;
 import com.gaseng.kyc.exception.KycErrorCode;
+import com.gaseng.kyc.repository.CriminalRecordRepository;
 import com.gaseng.kyc.repository.KycNoticeRepository;
-import com.gaseng.kyc.repository.KycRepository;
 import com.gaseng.kyc.repository.KycRequireRepository;
 import com.gaseng.member.domain.Member;
 import com.gaseng.member.domain.MemberStatus;
-
+import com.gaseng.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class KycManageService {
-	private final KycRepository kycRepository;
 	private final KycRequireRepository kycRequireRepository;
 	private final KycNoticeRepository kycNoticeRepository;
 	private final KycInterface kycInterface;
+	private final CriminalRecordRepository criminalRecordRepository;
+	private final MemberRepository memberRepository;
 	
 	public static int STATUS_ACTIVE = 0;
 	public static int STATUS_INACTIVE = 1;
+	public static String EXISTS_CRIMINAL_RECORD = "범죄 이력이 있습니다.";
+	public static String NOT_EXISTS_CRIMINAL_RECORD = "범죄 이력이 없습니다.";
 	
 	@Transactional
 	public KycRequireResponse get(Long kycrId) {
@@ -92,6 +94,20 @@ public class KycManageService {
 		return kycNoticeRepository.save(noticeEntity).getKycnId();
 		
 	}
+
+	public String getCriminalRecord(Long kycrId) {
+
+		KycRequire kycRequire = kycRequireRepository.findById(kycrId)
+				.orElseThrow(() -> BaseException.type(KycErrorCode.KYC_REQUIRE_NOT_FOUND));
+
+		String kycrName = kycRequire.getKycrName();
+		String memPhone = kycRequire.getMember().getMemPhone();
+
+		validateIsExistsMember(kycrName, memPhone);
+
+		return validateCriminalRecord(kycrName, memPhone);
+
+	}
 	
 	private void saveKyc(Member member) {
 		
@@ -100,6 +116,23 @@ public class KycManageService {
 				.member(member)
 				.build();
 		
+	}
+
+	private void validateIsExistsMember(String kycrName, String memPhone) {
+
+		if (!memberRepository.existsByMemNameAndMemPhone(kycrName, memPhone)) {
+			throw BaseException.type(KycErrorCode.KYC_REQUIRE_MEMBER_NOT_FOUND);
+		}
+
+	}
+
+	private String validateCriminalRecord(String kycrName, String memPhone) {
+
+		boolean isExists = criminalRecordRepository.existsByCmrNameAndCmrPhone(kycrName, memPhone);
+
+		return isExists
+				? EXISTS_CRIMINAL_RECORD
+				: NOT_EXISTS_CRIMINAL_RECORD;
 	}
 
 }

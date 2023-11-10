@@ -1,25 +1,18 @@
 package com.gaseng.kyc.controller;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.gaseng.global.common.BaseResponse;
 import com.gaseng.kyc.dto.KycRequireResponse;
 import com.gaseng.kyc.dto.KycRequireSummaryResponse;
 import com.gaseng.kyc.dto.KycSaveRequest;
 import com.gaseng.kyc.service.KycManageService;
-
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @Api(tags = "Kyc Api")
 @RestController
@@ -44,6 +37,12 @@ public class KycManageApiController {
 	@PostMapping("")
 	public BaseResponse<Long> save(@RequestParam Long kycrId, @RequestBody @Valid KycSaveRequest request) throws Exception {
 		return new BaseResponse<>(kycManageService.save(kycrId, request));
+	}
+
+	@Operation(summary = "범죄 이력 조회", description = "kyc 인증을 요청한 사용자의 범죄 이력을 조회합니다.")
+	@GetMapping("/criminal-records/{kycrId}")
+	public BaseResponse<String> getCriminalRecord(@PathVariable Long kycrId) {
+		return new BaseResponse<>(kycManageService.getCriminalRecord(kycrId));
 	}
 	
 }

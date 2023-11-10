@@ -37,7 +37,7 @@ public class SharehouseScrapApiController {
 
 
     @PreAuthorize("hasRole('USER')")
-    @Operation(summary = "스크랩 등록", description = "사용자가 스크랩합을 등록니다.")
+    @Operation(summary = "스크랩 등록", description = "사용자가 스크랩 등록을 합니다.")
     @PostMapping(value = "")
     public BaseResponse<Long> create(
             @ExtractPayload Long memId,

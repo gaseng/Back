@@ -6,6 +6,7 @@ import com.gaseng.member.service.MemberFindService;
 import com.gaseng.sharehouse.domain.Scrap;
 import com.gaseng.sharehouse.domain.Sharehouse;
 import com.gaseng.sharehouse.dto.SharehouseListResponse;
+import com.gaseng.sharehouse.exception.ScrapErrorCode;
 import com.gaseng.sharehouse.exception.SharehouseErrorCode;
 import com.gaseng.sharehouse.repository.ScrapRepository;
 import com.gaseng.sharehouse.repository.SharehouseRepository;
@@ -17,14 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ScrapService {
     private final ScrapRepository scrapRepository;
     private final MemberFindService memberFindService;
     private final SharehouseRepository sharehouseRepository;
 
-    @Transactional(readOnly = true)
     public List<SharehouseListResponse> getAll(Long memId, int pageSize, Long lastShrId) {
         Member member = memberFindService.findByMemId(memId);
         List<Scrap> scraps = scrapRepository.findByMemberOrderByScrapIdDesc(member);
@@ -50,32 +50,30 @@ public class ScrapService {
         return getScrapResponse(scrapLists, lastIndex, pageSize);
     }
 
-
+    @Transactional
     public Long create(Long memId, Long shrId){
         Member member = memberFindService.findByMemId(memId);
         Sharehouse sharehouse = findSharehouseByShrId(shrId);
-        validateDuplicateScrap(member,sharehouse);
+        validateDuplicateScrap(member, sharehouse);
 
         Scrap scrap = Scrap.builder()
                 .member(member)
                 .sharehouse(sharehouse)
                 .build();
 
-        scrapRepository.save(scrap);
+        Scrap savedScrap = scrapRepository.save(scrap);
 
-        return scrap.getScrapId();
+        return savedScrap.getScrapId();
     }
 
+    @Transactional
+    public Long delete(Long memId, Long scrapId){
+        validateIsExistsScrapByMemIdAndScrapId(memId, scrapId);
 
-    public Long delete(Long memId, Long shrId){
-        Member member = memberFindService.findByMemId(memId);
-        Sharehouse sharehouse = findSharehouseByShrId(shrId);
+        scrapRepository.deleteById(scrapId);
 
-        scrapRepository.deleteByMemberAndSharehouse(member, sharehouse);
-
-        return shrId;
+        return scrapId;
     }
-
 
     private int getLastIndex(List<SharehouseListResponse> scrapLists, Long lastShrId) {
         return scrapLists.indexOf(
@@ -86,7 +84,6 @@ public class ScrapService {
         );
     }
 
-
     private List<SharehouseListResponse> getScrapResponse(List<SharehouseListResponse> scrapLists, int lastIndex, int size) {
         if (lastIndex + 1 + size >= scrapLists.size()) {
             return (scrapLists.subList(lastIndex + 1, scrapLists.size()));
@@ -94,15 +91,20 @@ public class ScrapService {
         return (scrapLists.subList(lastIndex + 1, lastIndex + 1 + size));
     }
 
-
-    public Sharehouse findSharehouseByShrId(Long shrId) {
+    private Sharehouse findSharehouseByShrId(Long shrId) {
         return sharehouseRepository.findByShrId(shrId)
                 .orElseThrow(() -> BaseException.type(SharehouseErrorCode.SHAREHOUSE_NOT_FOUND));
     }
 
-    public void validateDuplicateScrap(Member member, Sharehouse sharehouse) {
+    private void validateDuplicateScrap(Member member, Sharehouse sharehouse) {
         if (scrapRepository.existsByMemberAndSharehouse(member,sharehouse)) {
-            throw BaseException.type(SharehouseErrorCode.DUPLICATE_SCRAP);
+            throw BaseException.type(ScrapErrorCode.DUPLICATE_SCRAP);
+        }
+    }
+
+    private void validateIsExistsScrapByMemIdAndScrapId(Long memId, Long scrapId) {
+        if (!scrapRepository.existsByMemberMemIdAndScrapId(memId, scrapId)) {
+            throw BaseException.type(ScrapErrorCode.SCRAP_NOT_FOUND);
         }
     }
 }

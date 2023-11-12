@@ -2,7 +2,6 @@ package com.gaseng.sharehouse.controller;
 
 import com.gaseng.global.annotation.ExtractPayload;
 import com.gaseng.global.common.BaseResponse;
-import com.gaseng.sharehouse.dto.ScrapRequest;
 import com.gaseng.sharehouse.dto.SharehouseListResponse;
 import com.gaseng.sharehouse.service.ScrapService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,7 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @ResponseBody
@@ -38,22 +36,22 @@ public class SharehouseScrapApiController {
 
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "스크랩 등록", description = "사용자가 스크랩 등록을 합니다.")
-    @PostMapping(value = "")
+    @PostMapping(value = "/sharehouse/{shrId}")
     public BaseResponse<Long> create(
             @ExtractPayload Long memId,
-            @Valid ScrapRequest request
+            @PathVariable Long shrId
     ) {
-        return new BaseResponse<>(scrapService.create(memId,request.id()));
+        return new BaseResponse<>(scrapService.create(memId, shrId));
     }
 
 
     @PreAuthorize("hasRole('USER')")
     @Operation(summary = "스크랩 취소", description = "사용자가 스크랩을 취소합니다.")
-    @DeleteMapping(value = "")
+    @DeleteMapping(value = "/{scrapId}")
     public BaseResponse<Long> delete(
             @ExtractPayload Long memId,
-            @Valid ScrapRequest request
+            @PathVariable Long scrapId
     ) {
-        return new BaseResponse<>(scrapService.delete(memId,request.id()));
+        return new BaseResponse<>(scrapService.delete(memId, scrapId));
     }
 }

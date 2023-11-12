@@ -10,11 +10,7 @@ import java.util.List;
 public interface ScrapRepository extends JpaRepository<Scrap,Long> {
 
     List<Scrap> findByMemberOrderByScrapIdDesc(Member member);
-
-
-    void deleteByMemberAndSharehouse(Member member, Sharehouse share);
-
-
     boolean existsByMemberAndSharehouse(Member member, Sharehouse share);
+    boolean existsByMemberMemIdAndScrapId(Long memId, Long scrapId);
 
 }

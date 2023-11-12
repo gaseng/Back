@@ -26,7 +26,7 @@ public class Scrap {
     private Sharehouse sharehouse;
 
     @Builder
-    public  Scrap(Member member, Sharehouse sharehouse){
+    public Scrap(Member member, Sharehouse sharehouse){
         this.member = member;
         this.sharehouse = sharehouse;
     }

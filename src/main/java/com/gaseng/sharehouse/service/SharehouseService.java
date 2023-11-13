@@ -180,7 +180,7 @@ public class SharehouseService {
 		Member member = memberFindService.findByMemId(memId);
 		List<Sharehouse> list = sharehouseRepository.findByMemberOrderByCreatedDateDesc(member);
 
-		List<SharehouseListResponse> responses = new ArrayList<SharehouseListResponse>();
+		List<SharehouseListResponse> responses = new ArrayList<>();
 		for (Sharehouse sharehouse : list) {
 			responses.add(
 				new SharehouseListResponse(
@@ -193,5 +193,4 @@ public class SharehouseService {
 		}
 		return responses;
 	}
-
 }

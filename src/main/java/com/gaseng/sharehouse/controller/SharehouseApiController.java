@@ -2,7 +2,6 @@ package com.gaseng.sharehouse.controller;
 
 import com.gaseng.global.annotation.ExtractPayload;
 import com.gaseng.global.common.BaseResponse;
-import com.gaseng.sharehouse.domain.Sharehouse;
 import com.gaseng.sharehouse.dto.*;
 import com.gaseng.sharehouse.service.SharehouseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,15 +33,14 @@ public class SharehouseApiController {
     	return new BaseResponse<>(sharehouseService.get(shrId));
     }
     
-    @Operation(summary = "쉐어하우스 글 목록 조회", description = "사용자가 쉐어하우스 글 목록을 조회합니다.")
+    @Operation(summary = "쉐어하우스 글 목록 조회", description = "사용자가 쉐어하우스 글 전체 목록을 조회합니다.")
     @GetMapping(value = "/all")
     public BaseResponse<List<SharehouseResponse>> getAll(
             @Parameter(description = "size of page", required = true, example = "10")
             @RequestParam(value = "page") int pageSize,
             @Parameter(description = "last sharehouse id in the list (default = -1)", example = "10")
-            @RequestParam(value = "index", defaultValue = "-1", required = false) Long lastShrId) {
-
-
+            @RequestParam(value = "index", defaultValue = "-1", required = false) Long lastShrId
+    ) {
     	return new BaseResponse<>(sharehouseService.getAll(pageSize, lastShrId));
     }
 
@@ -78,14 +76,17 @@ public class SharehouseApiController {
     public BaseResponse<Slice<SharehouseListResponse>> mySharehouse(
             @ExtractPayload Long memId,
             @RequestParam(value = "page", defaultValue = "0") int page,
-            @RequestParam(value = "size", defaultValue = "5") int size) {
+            @RequestParam(value = "size", defaultValue = "5") int size
+    ) {
         Pageable pageable = PageRequest.of(page, size);
         return new BaseResponse<> (sharehouseService.mySharehouse(memId, pageable));
     }
-    
+
+    @Operation(summary = "내가 쓴 글 조회", description = "사용자가 내가 쓴 글 목록을 조회합니다.")
     @GetMapping("/my-share")
     public BaseResponse<List<SharehouseListResponse>> getMyShareHouse(
-            @ExtractPayload Long memId) {
+            @ExtractPayload Long memId
+    ) {
         return new BaseResponse<> (sharehouseService.getMySharehouse(memId));
     }
 }

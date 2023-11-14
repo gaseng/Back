@@ -74,7 +74,7 @@ public class KycManageApiController {
 			@ApiResponse(responseCode = "404", description = "KYC 요청을 찾을 수 없습니다. / 일치하는 회원이 없습니다."),
 			@ApiResponse(responseCode = "500", description = "서버와의 연결에 실패했습니다.")
 	})
-	@GetMapping("/criminal-records/{kycrId}")
+	@GetMapping("/{kycrId}/criminal-records")
 	public BaseResponse<Integer> getCriminalRecord(
 			@Parameter(description = "kyc require id", required = true, example = "1")
 			@PathVariable Long kycrId

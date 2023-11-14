@@ -75,7 +75,7 @@ public class KycManageApiController {
 			@ApiResponse(responseCode = "500", description = "서버와의 연결에 실패했습니다.")
 	})
 	@GetMapping("/criminal-records/{kycrId}")
-	public BaseResponse<String> getCriminalRecord(
+	public BaseResponse<Integer> getCriminalRecord(
 			@Parameter(description = "kyc require id", required = true, example = "1")
 			@PathVariable Long kycrId
 	) {

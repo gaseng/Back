@@ -5,6 +5,7 @@ import com.gaseng.kyc.domain.Kyc;
 import com.gaseng.kyc.domain.KycNotice;
 import com.gaseng.kyc.domain.KycNoticeStatus;
 import com.gaseng.kyc.domain.KycRequire;
+import com.gaseng.kyc.dto.CriminalRecordResponse;
 import com.gaseng.kyc.dto.KycRequireResponse;
 import com.gaseng.kyc.dto.KycRequireSummaryResponse;
 import com.gaseng.kyc.dto.KycSaveRequest;
@@ -34,8 +35,6 @@ public class KycManageService {
 	
 	public static int STATUS_ACTIVE = 0;
 	public static int STATUS_INACTIVE = 1;
-	public static String EXISTS_CRIMINAL_RECORD = "범죄 이력이 있습니다.";
-	public static String NOT_EXISTS_CRIMINAL_RECORD = "범죄 이력이 없습니다.";
 	
 	@Transactional
 	public KycRequireResponse get(Long kycrId) {
@@ -95,7 +94,7 @@ public class KycManageService {
 		
 	}
 
-	public String getCriminalRecord(Long kycrId) {
+	public int getCriminalRecord(Long kycrId) {
 
 		KycRequire kycRequire = kycRequireRepository.findById(kycrId)
 				.orElseThrow(() -> BaseException.type(KycErrorCode.KYC_REQUIRE_NOT_FOUND));
@@ -126,13 +125,13 @@ public class KycManageService {
 
 	}
 
-	private String validateCriminalRecord(String kycrName, String memPhone) {
+	private int validateCriminalRecord(String kycrName, String memPhone) {
 
 		boolean isExists = criminalRecordRepository.existsByCmrNameAndCmrPhone(kycrName, memPhone);
 
 		return isExists
-				? EXISTS_CRIMINAL_RECORD
-				: NOT_EXISTS_CRIMINAL_RECORD;
+				? CriminalRecordResponse.EXISTS_CRIMINAL_RECORD.getStatus()
+				: CriminalRecordResponse.NOT_EXISTS_CRIMINAL_RECORD.getStatus();
 	}
 
 }

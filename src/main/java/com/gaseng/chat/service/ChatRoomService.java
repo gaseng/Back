@@ -99,7 +99,8 @@ public class ChatRoomService {
     }
 
     private void validateDuplicateChatRoom(Member sender, Member receiver, Sharehouse sharehouse) {
-        if (chatRoomRepository.existsBySenderAndReceiverAndSharehouse(sender, receiver, sharehouse)) {
+        if (chatRoomRepository.existsBySenderAndReceiverAndSharehouseAndChatRoomStatus(
+                sender, receiver, sharehouse, ChatRoomStatus.ACTIVE)) {
             throw BaseException.type(ChatRoomErrorCode.DUPLICATE_CHAT_ROOM);
         }
     }

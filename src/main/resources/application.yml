@@ -60,17 +60,14 @@ logging:
   level:
     com:
       amazonaws:
-        util:
-          EC2MetadataUtils: error
+        util.EC2MetadataUtils: error
+        internal.InstanceMetadataServiceResourceFetcher: error
 
 #    org:
 #      hibernate:
 #        type:
 #          descriptor:
 #            sql: trace
-
-  config:
-    classpath:logback/logback-dev.xml
 
 coolsms:
   api:

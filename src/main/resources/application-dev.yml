@@ -2,3 +2,7 @@ spring:
   config:
     import:
       - classpath:secret.yml
+
+logging:
+  config:
+    classpath:logback/logback-dev.xml

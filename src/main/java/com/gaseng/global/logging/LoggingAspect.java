@@ -23,12 +23,19 @@ public class LoggingAspect {
     private final LoggingStatusManager loggingStatusManager;
     private final LoggingTracer loggingTracer;
 
-    @Pointcut("execution(public * com.gaseng..*(..)) && !execution(public * com.gaseng.global.logging..*(..))")
+    @Pointcut("execution(public * com.gaseng..*(..)) && " +
+            "!execution(public * com.gaseng.global.logging..*(..)) && " +
+            "cleanupExpiredVerificationCodesMethod()")
     private void allComponents() {
     }
 
     @Pointcut("execution(public * com.gaseng..*ApiController.*(..))")
     private void allController() {
+    }
+
+    @Pointcut("!execution(public * com.gaseng.certification.service.MessageService.cleanupExpiredVerificationCodes(..)) &&" +
+            "!execution(public * com.gaseng.certification.repository.CertificationRepository.findByExpirationDateBefore(..))")
+    private void cleanupExpiredVerificationCodesMethod() {
     }
 
     @Around("allComponents()")

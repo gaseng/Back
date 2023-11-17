@@ -21,7 +21,7 @@ public class LoggingTracer {
         loggingStatusManager.syncStatus();
         if (log.isInfoEnabled()) {
             log.info(
-                    "[{}] {}{} args={}",
+                    "[{}] {} {} args={}",
                     loggingStatusManager.getTaskId(),
                     expressingDepth(REQUEST_PREFIX, loggingStatusManager.getDepthLevel()),
                     methodSignature,

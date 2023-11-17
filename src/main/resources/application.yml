@@ -63,11 +63,14 @@ logging:
         util:
           EC2MetadataUtils: error
 
-    org:
-      hibernate:
-        type:
-          descriptor:
-            sql: trace
+#    org:
+#      hibernate:
+#        type:
+#          descriptor:
+#            sql: trace
+
+  config:
+    classpath:logback/logback-dev.xml
 
 coolsms:
   api:

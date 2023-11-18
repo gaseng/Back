@@ -1,12 +1,15 @@
 package com.gaseng.global.exception;
 
 import com.gaseng.global.common.BaseResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.UnsatisfiedServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -14,11 +17,49 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.List;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(BaseException.class)
-    public ResponseEntity<BaseResponse> applicationException(BaseException exception) {
-        ErrorCode code = exception.getCode();
+    public ResponseEntity<BaseResponse> applicationException(final BaseException e) {
+        final ErrorCode code = e.getCode();
+
+        log.warn(
+                "Gaseng Application Exception Occurred -> {} | {} | {}",
+                code.getStatus(),
+                code.getCode(),
+                code.getMessage(),
+                e
+        );
+
+        return ResponseEntity
+                .status(code.getStatus())
+                .body(BaseResponse.from(code));
+    }
+
+    /**
+     * JSON Parsing Error 전용 ExceptionHandler
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<BaseResponse> httpMessageNotReadableException(final HttpMessageNotReadableException e) {
+        log.warn("HttpMessageNotReadableException Occurred -> {}", e.getMessage(), e);
+
+        final ErrorCode code = GlobalErrorCode.VALIDATION_ERROR;
+        return ResponseEntity
+                .status(code.getStatus())
+                .body(BaseResponse.from(code));
+    }
+
+    /**
+     * 요청 파라미터 Validation 전용 ExceptionHandler
+     */
+    @ExceptionHandler(UnsatisfiedServletRequestParameterException.class)
+    public ResponseEntity<BaseResponse> unsatisfiedServletRequestParameterException(
+            final UnsatisfiedServletRequestParameterException e
+    ) {
+        log.warn("UnsatisfiedServletRequestParameterException Occurred -> {}", e.getMessage(), e);
+
+        final ErrorCode code = GlobalErrorCode.VALIDATION_ERROR;
         return ResponseEntity
                 .status(code.getStatus())
                 .body(BaseResponse.from(code));

@@ -2,7 +2,7 @@ package com.gaseng.member.service;
 
 import com.gaseng.certification.service.MessageService;
 import com.gaseng.global.exception.BaseException;
-import com.gaseng.jwt.service.TokenService;
+import com.gaseng.jwt.persistence.TokenPersistenceAdapter;
 import com.gaseng.jwt.util.JwtTokenProvider;
 import com.gaseng.member.domain.Email;
 import com.gaseng.member.domain.Member;
@@ -34,7 +34,7 @@ public class MemberService {
     private final SharehouseService sharehouseService;
     private final SharehouseRepository sharehouseRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    private final TokenService tokenService;
+    private final TokenPersistenceAdapter tokenPersistenceAdapter;
 
     @Transactional
     public Long signUp(Member member) {
@@ -54,7 +54,7 @@ public class MemberService {
 
         String accessToken = jwtTokenProvider.generateAccessToken(member.getMemId());
         String refreshToken = jwtTokenProvider.generateRefreshToken(member.getMemId());
-        tokenService.manageRefreshTokenConsistency(member.getMemId(), refreshToken);
+        tokenPersistenceAdapter.synchronizeRefreshToken(member.getMemId(), refreshToken);
 
         return new LoginResponse(
                 member.getMemId(),
@@ -70,7 +70,7 @@ public class MemberService {
 
     @Transactional
     public Long logout(Long memId) {
-        tokenService.deleteRefreshTokenByMemId(memId);
+        tokenPersistenceAdapter.deleteRefreshTokenByMemId(memId);
         return memId;
     }
 
@@ -108,6 +108,7 @@ public class MemberService {
         memberRepository.save(member);
         return member.getMemId();
     }
+
     @Transactional
     public Long signOut(Long memId) {
         Member member = memberRepository.findByMemId(memId).get();
@@ -116,7 +117,7 @@ public class MemberService {
             sharehouseService.deleteSharehouse(memId,shareHouse.getShrId());
         }
         memberRepository.delete(member);
-        tokenService.deleteRefreshTokenByMemId(memId);
+        tokenPersistenceAdapter.deleteRefreshTokenByMemId(memId);
         return memId;
     }
 

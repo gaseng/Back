@@ -3,6 +3,11 @@ spring:
     import:
       - classpath:secret.yml
 
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
 logging:
   config:
     classpath:logback/logback-dev.xml

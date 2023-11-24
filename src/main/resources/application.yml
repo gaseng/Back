@@ -41,6 +41,11 @@ spring:
       maxFileSize: 10MB
       maxRequestSize: 20MB
 
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: 6379
+
 jwt:
   secret: ${JWT_SECRET}
   access-token-validity: 2592000
